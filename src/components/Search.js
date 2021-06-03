@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Book from './Book';
-import * as BooksAPI from '../data/BooksAPI';
+import * as BooksAPI from '../BooksAPI';
 
 class Search extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    changeShelf: PropTypes.func.isRequired
+    changecategory: PropTypes.func.isRequired
   };
 
   state = {
@@ -32,7 +32,7 @@ class Search extends Component {
 
   render() {
     const { query, newBooks, searchErr } = this.state;
-    const { books, changeShelf } = this.props;
+    const { books, changecategory } = this.props;
 
     return (
       <div className="search-books">
@@ -59,7 +59,7 @@ class Search extends Component {
                     book={book}
                     books={books}
                     key={book.id}
-                    changeShelf={changeShelf}
+                    changecategory={changecategory}
                   />
                 ))}
               </ol>

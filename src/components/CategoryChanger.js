@@ -1,30 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class ShelfChanger extends Component {
+class CategoryChanger extends Component {
   static propTypes = {
     book: PropTypes.object.isRequired,
     books: PropTypes.array.isRequired,
-    changeShelf: PropTypes.func.isRequired
+    changeCategory: PropTypes.func.isRequired
   };
 
-  updateShelf = event =>
-    this.props.changeShelf(this.props.book, event.target.value);
+  updatecategory = event =>
+    this.props.changeCategory(this.props.book, event.target.value);
 
   render() {
     const { book, books } = this.props;
-    let currentShelf = 'none';
+    let currentCategory = 'none';
     
     for (let item of books) {
       if (item.id === book.id) {
-        currentShelf = item.shelf;
+        currentCategory = item.category;
         break;
       }
     }
 
     return (
-      <div className="book-shelf-changer">
-        <select onChange={this.updateShelf} defaultValue={currentShelf}>
+      <div className="book-category-changer">
+        <select onChange={this.updatecategory} defaultValue={currentCategory}>
           <option value="none" disabled>
             Move to...
           </option>
@@ -38,4 +38,4 @@ class ShelfChanger extends Component {
   }
 }
 
-export default ShelfChanger
+export default CategoryChanger

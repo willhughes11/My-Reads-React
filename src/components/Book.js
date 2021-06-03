@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ShelfChanger from './ShelfChanger';
+import CategoryChanger from './CategoryChanger';
 import noCover from '../images/no-cover-image.jpg';
 
 const Book = props => {
-  const { book, books, changeShelf } = props;
+  const { book, books, changeCategory } = props;
   const coverImg = book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : noCover;
   const title = book.title ? book.title : 'No title available';
 
@@ -12,11 +12,8 @@ const Book = props => {
     <li>
       <div className="book">
         <div className="book-top">
-          <div
-            className="book-cover"
-            style={{ backgroundImage: `url(${coverImg})` }}
-          />
-          <ShelfChanger book={book} books={books} changeShelf={changeShelf} />
+          <div className="book-cover" style={{ backgroundImage: `url(${coverImg})` }}/>
+          <CategoryChanger book={book} books={books} changeCategory={changeCategory} />
         </div>
         <div className="book-title">{title}</div>
         {
@@ -34,7 +31,7 @@ const Book = props => {
 Book.propTypes = {
   book: PropTypes.object.isRequired,
   books: PropTypes.array.isRequired,
-  changeShelf: PropTypes.func.isRequired
+  changeCategory: PropTypes.func.isRequired
 };
 
 export default Book
