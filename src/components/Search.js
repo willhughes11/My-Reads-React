@@ -7,7 +7,7 @@ import * as BooksAPI from '../BooksAPI';
 class Search extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    changecategory: PropTypes.func.isRequired
+    onBookShelfChange: PropTypes.func.isRequired
   };
 
   state = {
@@ -30,9 +30,12 @@ class Search extends Component {
     } else this.setState({ newBooks: [], searchErr: false });
   };
 
+  bookShelfChange = (book, shelf) => {
+    this.props.onBookShelfChange(book, shelf);
+}
+
   render() {
     const { query, newBooks, searchErr } = this.state;
-    const { books, changecategory } = this.props;
 
     return (
       <div className="search-books">
@@ -55,12 +58,9 @@ class Search extends Component {
               <h3>Search returned {newBooks.length} books </h3>
               <ol className="books-grid">
                 {newBooks.map(book => (
-                  <Book
-                    book={book}
-                    books={books}
-                    key={book.id}
-                    changecategory={changecategory}
-                  />
+                  <li key={book.id}>
+                    <Book book={book} bookShelfChange={this.bookShelfChange} />
+                  </li>
                 ))}
               </ol>
             </div>

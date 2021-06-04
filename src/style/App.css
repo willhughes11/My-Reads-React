@@ -168,7 +168,7 @@ button:active {
   align-items: flex-end;
 }
 
-.book-category-changer {
+.book-shelf-changer {
   position: absolute;
   right: 0;
   bottom: -10px;
@@ -182,8 +182,7 @@ button:active {
   background-size: 20px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
-
-.book-category-changer select {
+.book-shelf-changer select {
   width: 100%;
   height: 100%;
   opacity: 0;

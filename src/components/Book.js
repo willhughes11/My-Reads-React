@@ -1,37 +1,46 @@
-import React from 'react';
+import React , { Component } from 'react';
 import PropTypes from 'prop-types';
-import CategoryChanger from './CategoryChanger';
-import noCover from '../images/no-cover-image.jpg';
 
-const Book = props => {
-  const { book, books, changeCategory } = props;
-  const coverImg = book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : noCover;
-  const title = book.title ? book.title : 'No title available';
+class Book extends Component {
+  static propTypes = {
+    book: PropTypes.object.isRequired,
+    bookShelfChange: PropTypes.func.isRequired
+  }
 
-  return (
-    <li>
+  bookShelfChange = (e) => {
+    let newShelf = e.target.value;
+    this.props.bookShelfChange(this, newShelf)
+  }
+
+  render() {
+    const { title } = this.props.book;
+
+  if(this.props.book.imageLinks === undefined ) {
+    this.props.book.imageLinks = ['thumbnail'];
+    this.props.book.imageLinks.thumbnail = "";
+  }
+
+    return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ backgroundImage: `url(${coverImg})` }}/>
-          <CategoryChanger book={book} books={books} changeCategory={changeCategory} />
+          <div className="book-cover">
+            <img alt="" src={this.props.book.imageLinks.thumbnail} />
+          </div>
+          <div className="book-shelf-changer">
+            <select onChange={this.bookShelfChange} defaultValue={this.props.book.shelf}>
+              <option value="none" disabled>Move to...</option>
+              <option value="currentlyReading">Currently Reading</option>
+              <option value="wantToRead">Want to Read</option>
+              <option value="read">Read</option>
+              <option value="none">None</option>
+            </select>
+          </div>
         </div>
         <div className="book-title">{title}</div>
-        {
-        book.authors &&
-          book.authors.map((author, index) => (
-            <div className="book-authors" key={index}>
-              {author}
-            </div>
-          ))}
+          <div className="book-authors">{this.props.book.authors}</div>
       </div>
-    </li>
-  );
-};
-
-Book.propTypes = {
-  book: PropTypes.object.isRequired,
-  books: PropTypes.array.isRequired,
-  changeCategory: PropTypes.func.isRequired
-};
+    )
+  }
+}
 
 export default Book
