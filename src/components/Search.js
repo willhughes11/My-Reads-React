@@ -16,6 +16,8 @@ class Search extends Component {
     searchErr: false
   };
 
+  // Used https://github.com/sarah-maris/reactnd-project-myreads/blob/master/src/components/Search.js as model for the search component
+  
   getBooks = event => {
     const query = event.target.value;
     this.setState({ query });
