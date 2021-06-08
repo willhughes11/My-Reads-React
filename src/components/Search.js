@@ -1,35 +1,29 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Book from './Book';
 import * as BooksAPI from '../BooksAPI';
 
 class Search extends Component {
-  static propTypes = {
-    books: PropTypes.array.isRequired,
-    onBookShelfChange: PropTypes.func.isRequired
-  };
-
   state = {
-    query: '',
-    newBooks: [],
-    searchErr: false
+    queryStr: '',
+    bookArr: [],
   };
 
-  // Used https://github.com/sarah-maris/reactnd-project-myreads/blob/master/src/components/Search.js as model for the search component
-  
-  getBooks = event => {
-    const query = event.target.value;
-    this.setState({ query });
+  getBooks = e => {
+    const queryStr = e.target.value;
+    this.setState({ queryStr });
 
-    if (query) {
-      BooksAPI.search(query.trim(), 20).then(books => {
-        books.length > 0
-          ? this.setState({ newBooks: books, searchErr: false })
-          : this.setState({ newBooks: [], searchErr: true });
+    if (queryStr !== undefined) {
+      BooksAPI.search(queryStr).then(books => {
+        if(books.length > 0){
+          this.setState({ bookArr: books})
+        }
+        else {
+          this.setState({ bookArr: []});
+        }
       });
 
-    } else this.setState({ newBooks: [], searchErr: false });
+    } else this.setState({ bookArr: []});
   };
 
   bookShelfChange = (book, shelf) => {
@@ -37,7 +31,7 @@ class Search extends Component {
 }
 
   render() {
-    const { query, newBooks, searchErr } = this.state;
+    const { queryStr, bookArr } = this.state;
 
     return (
       <div className="search-books">
@@ -46,30 +40,27 @@ class Search extends Component {
             Close
           </Link>
           <div className="search-books-input-wrapper">
-            <input
-              type="text"
-              placeholder="Search by title or author"
-              value={query}
-              onChange={this.getBooks}
-            />
+            <input type="text" placeholder="Search by title or author" value={queryStr} onChange={this.getBooks} />
           </div>
         </div>
         <div className="search-books-results">
-          {newBooks.length > 0 && (
+          {bookArr.length > 0 && queryStr !== '' ? (
             <div>
-              <h3>Search returned {newBooks.length} books </h3>
+              <h3>Search returned {bookArr.length} books </h3>
               <ol className="books-grid">
-                {newBooks.map(book => (
+                {bookArr.map(book => (
                   <li key={book.id}>
                     <Book book={book} bookShelfChange={this.bookShelfChange} />
                   </li>
                 ))}
               </ol>
             </div>
-          )}
-          {searchErr && (
+          ) : bookArr.length === 0 && queryStr !== '' ? (
             <h3>Search did not return any books. Please try again!</h3>
-          )}
+          ) : (
+            <h3>Results will appear here...</h3>
+          )
+          }
         </div>
       </div>
     );

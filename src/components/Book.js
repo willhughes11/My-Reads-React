@@ -1,11 +1,6 @@
 import React , { Component } from 'react';
-import PropTypes from 'prop-types';
 
 class Book extends Component {
-  static propTypes = {
-    book: PropTypes.object.isRequired,
-    bookShelfChange: PropTypes.func.isRequired
-  }
 
   bookShelfChange = (e) => {
     let newShelf = e.target.value;
@@ -37,7 +32,7 @@ class Book extends Component {
           </div>
         </div>
         <div className="book-title">{title}</div>
-          <div className="book-authors">{this.props.book.authors}</div>
+          <div className="book-authors">{this.props.book.authors === undefined ? "Unknown" : this.props.book.authors.join(', ')}</div>
       </div>
     )
   }
