@@ -31,7 +31,7 @@ class Book extends Component {
             </select>
           </div>
         </div>
-        <div className="book-title">{title}</div>
+        <div className="book-title">{title === undefined ? "Unknown" : title}</div>
           <div className="book-authors">{this.props.book.authors === undefined ? "Unknown" : this.props.book.authors.join(', ')}</div>
       </div>
     )

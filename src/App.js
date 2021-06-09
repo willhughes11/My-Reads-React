@@ -10,22 +10,24 @@ class BooksApp extends Component {
     books: [] 
   };
 
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState({
-        books: books
-      });
-    })
+  async componentDidMount() {
+    const books = await BooksAPI.getAll();
+    this.setState({ books });
   }
   
+  async componentDidUpdate(prevState){
+    if(this.state.books !== prevState.books){
+      const books = await BooksAPI.getAll();
+      this.setState({ books });
+    }
+  }
+
   changeShelf = (book, newShelf) => {
     this.setState({
       book: this.state.books.filter( (b) => b.id !== book.props.book.id).concat([book.props.book])
     })
-    // console.log(book.props.book)
     book.props.book.shelf = newShelf;
-    book = book.props.book;
-    BooksAPI.update(book, newShelf);
+    BooksAPI.update(book.props.book, newShelf);
   }
 
   render() {

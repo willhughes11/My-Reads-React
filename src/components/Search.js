@@ -7,22 +7,48 @@ class Search extends Component {
   state = {
     queryStr: '',
     bookArr: [],
+    shelfedBookArr: [],
   };
+
+  async componentDidMount() {
+    const shelfedBookArr = await BooksAPI.getAll();
+    this.setState({ shelfedBookArr });
+  }
+
+  async componentDidUpdate(prevState){
+    if(this.state.shelfedBookArr !== prevState.shelfedBookArr){
+      const shelfedBookArr = await BooksAPI.getAll();
+      this.setState({ shelfedBookArr });
+    }
+  }
 
   getBooks = e => {
     const queryStr = e.target.value;
     this.setState({ queryStr });
 
-    if (queryStr !== undefined) {
+    const shelfedBooks = this.state.shelfedBookArr;
+
+    if (queryStr !== undefined && queryStr !== '') {
       BooksAPI.search(queryStr).then(books => {
-        if(books.length > 0){
-          this.setState({ bookArr: books})
-        }
-        else {
-          this.setState({ bookArr: []});
+        if(books !== undefined){
+          if(books.length > 0){
+            books.forEach(bookItem => {
+              shelfedBooks.forEach(shelfItem => {
+                if(bookItem.title === shelfItem.title){
+                  bookItem["shelf"] = shelfItem.shelf;
+                }
+                else{
+                  bookItem["shelf"] = "none";
+                }
+              });
+            });
+            this.setState({ bookArr: books})
+          }
+          else {
+            this.setState({ bookArr: []});
+          }
         }
       });
-
     } else this.setState({ bookArr: []});
   };
 
