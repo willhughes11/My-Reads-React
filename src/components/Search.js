@@ -24,24 +24,26 @@ class Search extends Component {
 
   getBooks = e => {
     const queryStr = e.target.value;
-    this.setState({ queryStr });
-
     const shelfedBooks = this.state.shelfedBookArr;
+    this.setState({ queryStr });
 
     if (queryStr !== undefined && queryStr !== '') {
       BooksAPI.search(queryStr).then(books => {
         if(books !== undefined){
           if(books.length > 0){
+            let idArr =[]
             books.forEach(bookItem => {
               shelfedBooks.forEach(shelfItem => {
-                if(bookItem.title === shelfItem.title){
+                if(shelfItem.id === bookItem.id){
                   bookItem["shelf"] = shelfItem.shelf;
+                  idArr.push(bookItem.id)
                 }
-                else{
-                  bookItem["shelf"] = "none";
+                else if(shelfItem.id !== bookItem.id && idArr.includes(bookItem.id) === false){
+                  bookItem["shelf"] = "none"
                 }
               });
             });
+            console.log(books)
             this.setState({ bookArr: books})
           }
           else {
